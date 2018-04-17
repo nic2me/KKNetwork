@@ -32,4 +32,5 @@ typedef void(^KKDownloadProgress)(int64_t bytesRead, int64_t totalBytes);
                 progressBlock:(KKDownloadProgress)progressBlock
                       success:(KKResponseSeccessBlock)successBlock
                          fail:(KKResponseFailBlock)failBlock;
++(void)checkNetworkStatus;
 @end

@@ -92,10 +92,10 @@ static NSMutableArray *tasks;
 {
     AFHTTPSessionManager *manager=[self httpManager];
     
-//    if(networkStatus == StatusNotReachable || url==nil)
-//    {
-//        return nil;
-//    }
+    if(url==nil)
+    {
+        return nil;
+    }
     //检查地址中是否有中文
     NSString *urlStr=[NSURL URLWithString:url]?url:[self strUTF8Encoding:url];
     
@@ -122,18 +122,22 @@ static NSMutableArray *tasks;
         }];
     }else
     {
-        sessionTask = [manager GET:urlStr parameters:params progress:^(NSProgress * _Nonnull downloadProgress){
+        sessionTask = [manager GET:urlStr
+                        parameters:params
+                          progress:^(NSProgress * _Nonnull downloadProgress){
             if (progressBlock)
             {
                 progressBlock(downloadProgress.completedUnitCount,downloadProgress.totalUnitCount);
             }
             
-        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        }
+                           success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             if (successBlock){
                 successBlock(responseObject);
             }
             [[self tasks] removeObject:sessionTask];
-        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        }
+                           failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             if (failBlock){
                 failBlock(error);
             }
